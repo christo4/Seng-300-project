@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-public class JavaApplication {
+public class Project {
 		public static void main(String[] args) {
 			int decCount = 0;
 			int refCount = 0;
