@@ -21,15 +21,15 @@ public class JavaApplication {
 			int refCount = 0;
 			Project p = new Project();
 			Scanner input = new Scanner(System.in);
-			//System.out.print("Enter a file: ");
-			//String fileName = input.nextLine();
+			//System.out.print("Enter Java Type: ");
+			//String type = input.nextLine();
 			p.initParser("public class A {ArrayList<String> string = new ArrayList<String>; int seconds;} private class B{} char C;}");
 		}
 		
 		public void initParser(String fileName) {
 
 			ASTParser parser = ASTParser.newParser(AST.JLS8);
-			parser.setSource(fileName.toCharArray());						
+			parser.setSource(type.toCharArray());						
 			parser.setKind(parser.K_COMPILATION_UNIT);
 			Map options = JavaCore.getOptions();
 			JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
