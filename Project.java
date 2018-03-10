@@ -26,7 +26,7 @@ public class JavaApplication {
 			p.initParser("public class A {ArrayList<String> string = new ArrayList<String>; int seconds;} private class B{} char C;}");
 		}
 		
-		public void initParser(String fileName) {
+		public void initParser(String type) {
 
 			ASTParser parser = ASTParser.newParser(AST.JLS8);
 			parser.setSource(type.toCharArray());						
