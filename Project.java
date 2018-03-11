@@ -45,8 +45,10 @@ public class Project {
 				
 				
 				public boolean visit(TypeDeclaration node) {					//if the node name is the same is the input given, should increase count.. but it's not working
+					//if(node.getName().toString() == javaType){
+					//	decCount++;
+					//}
 					decCount++;
-					
 					return true;
 				}
 				public void endVisit(TypeDeclaration node) {
