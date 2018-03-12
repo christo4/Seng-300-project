@@ -1,5 +1,7 @@
+package seng_project;
 
-
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -22,21 +24,40 @@ public class Project {
 		public static void main(String[] args) {
 
 			Project p = new Project();
+			String pathName;
+			String javaType;
 			
-			//System.out.print("Enter Java Type: ");
-			//String type = input.nextLine();
-			p.initParser("public class A {String name; char c; Time D;} public class B{}");
-
+			if(args.length == 2) {
+				pathName = args[0];
+				javaType = args[1];
+			}
+			else {
+				System.out.println("Unallowed amount of arguments. Ending program.");
+				System.exit(1);
+			}
+			p.initParser(p.getDirectory(pathName));
 		}
 		
-		public void initParser(String javaFiles) {
-			Scanner input = new Scanner(System.in);
-			System.out.print("Enter Type: ");
-			String javaType = input.nextLine();
+		public File[] getDirectory(String pathName) {
+			File file = new File(pathName);
+			File[] list = file.listFiles(new FilenameFilter() {
+				public boolean accept(File file, String name)
+				{
+					return name.endsWith(".java");
+				}
+			});
+			return list;
+		}
+		
+		public void initParser(File[] pathName) {
+			//Scanner input = new Scanner(System.in);
+			//System.out.print("Enter Type: ");
+			//String javaType = input.nextLine();
 			
 			ASTParser parser = ASTParser.newParser(AST.JLS8);
-			parser.setSource(javaFiles.toCharArray());						
+			parser.setSource(pathName);						
 			parser.setKind(parser.K_COMPILATION_UNIT);
+			parser.setResolveBindings(true);
 			Map options = JavaCore.getOptions();
 			JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 			parser.setCompilerOptions(options);
@@ -87,6 +108,3 @@ public class Project {
 		}
 		
 }
-
-		
-
