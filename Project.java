@@ -53,6 +53,7 @@ public class Project {
 			for(int i = 0; i < fileName.length; i++){
 				p.initParser(sourceCode[i], fileName[i], javaType, pathNameArray);
 			}
+			System.out.println(javaType + " Declarations found: " + decCount + "; references found: " + refCount);
 		}
 		
 		//Get Directory goes through the folder given by the pathname and adds every file that ends with .java to the File[] list and returns
@@ -129,7 +130,7 @@ public class Project {
 			JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 			parser.setCompilerOptions(options);
 			CompilationUnit unit = (CompilationUnit)parser.createAST(null);
-			System.out.println(unit.getAST().hasBindingsRecovery());
+			//System.out.println(unit.getAST().hasBindingsRecovery());
 			
 			
 			
@@ -138,10 +139,11 @@ public class Project {
 				
 				
 				public boolean visit(TypeDeclaration node) {					//if the node name is the same is the input given, should increase count.. but it's not working
-					//if(node.getName().toString() == javaType){
-					//	decCount++;
-					//}
-					decCount++;
+					if(node.resolveBinding().getName().equals(javaType)){
+						decCount++;
+					}
+					
+					//decCount++;
 					return true;
 				}
 				public void endVisit(TypeDeclaration node) {
@@ -176,6 +178,7 @@ public class Project {
 				}
 		*/		
 			});	
-			System.out.println(javaType + " Declarations found: " + decCount + "; references found: " + refCount);
+			
 		}
+		
 }
