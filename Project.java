@@ -14,13 +14,19 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AnnotationTypeDeclaration;
+import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.ArrayCreation;
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
+import org.eclipse.jdt.core.dom.Javadoc;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 
 /*Main gets command line arguments and initializes them to pathname and javatype for later use. Main also calls the methods
@@ -53,6 +59,7 @@ public class Project {
 			for(int i = 0; i < fileName.length; i++){
 				p.initParser(sourceCode[i], fileName[i], javaType, pathNameArray);
 			}
+			System.out.println(javaType + " Declarations found: " + decCount + "; references found: " + refCount);
 		}
 		
 		//Get Directory goes through the folder given by the pathname and adds every file that ends with .java to the File[] list and returns
@@ -129,7 +136,8 @@ public class Project {
 			JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 			parser.setCompilerOptions(options);
 			CompilationUnit unit = (CompilationUnit)parser.createAST(null);
-			System.out.println(unit.getAST().hasBindingsRecovery());
+			AST test = unit.getAST();
+			System.out.print("");
 			
 			
 			
@@ -138,28 +146,27 @@ public class Project {
 				
 				
 				public boolean visit(TypeDeclaration node) {					//if the node name is the same is the input given, should increase count.. but it's not working
-					//if(node.getName().toString() == javaType){
-					//	decCount++;
-					//}
-					decCount++;
+					if(node.resolveBinding().getQualifiedName().equals(javaType)) {
+						decCount++;
+					}
 					return true;
 				}
 				public void endVisit(TypeDeclaration node) {
-					//System.out.println("declarations found :" + decCount);
 				}
 				
 				public boolean visit(FieldDeclaration node) {
-					refCount++;
+					if(node.getType().resolveBinding().getQualifiedName().toString().equals(javaType)) {
+						refCount++;
+					}
 					return true;
 				}
 
 				public void endVisit(FieldDeclaration node) {
-					//System.out.println("references found :" + refCount);
 				}
 				
 				
 				public boolean visit(EnumDeclaration node) {
-					if(node.getName().toString() == javaType) {
+					if(node.resolveBinding().getQualifiedName().toString().equals(javaType)) {
 						decCount++;
 					}
 					return true;
@@ -168,14 +175,31 @@ public class Project {
 				}
 		
 				
-	/*			public boolean visit(AnnotationTypeDeclaration node) {
-					decCount++;
+				public boolean visit(AnnotationTypeDeclaration node) {
+					if(node.resolveBinding().getQualifiedName().toString().equals(javaType)) {
+						decCount++;
+					}
 					return true;
 				}
 				public void endVisit(AnnotationTypeDeclaration node) {
 				}
-		*/		
+				
+				//public boolean visit(VariableDeclarationExpression node) {
+					//System.out.println(node.);
+					//return true;
+				//}
+				//public void endVisit(VariableDeclarationExpression node) {
+				//}
+				
+				/*public boolean visit(AnonymousClassDeclaration node) {
+					System.out.println(node.toString());
+					return true;
+				}
+				public void endVisit(AnonymousClassDeclaration node) {
+				}
+				**/
 			});	
-			System.out.println(javaType + " Declarations found: " + decCount + "; references found: " + refCount);
+			
 		}
+		
 }
