@@ -20,11 +20,8 @@ public class GetDirectoryTest {
 	@Before
 	public void setUp() throws Exception {
 		p = new Project();
-		pathName = AllTests.BASEDIR + "\\SENG 300 Assignment 1\\src\\test_classes";
-		javaType = "";
-		
+		pathName = AllTests.BASEDIR + "SENG-300-Assignment-1\\src\\test_classes";
 	}
-
 
 	@Test
 	public void testGetDirectoryWithValidDirectory() {
