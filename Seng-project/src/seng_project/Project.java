@@ -44,6 +44,9 @@ public class Project {
 				System.exit(1);
 			}
 			File[] list = p.getDirectory(pathName);
+			if(list.length < 1) {
+				System.out.println("No .java files were found. Ending program");
+			}
 			String[] sourceCode = p.getSourceCode(list);
 			String[] fileName = p.getFileName(list);
 			
